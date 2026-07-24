@@ -18,6 +18,7 @@
     .loaded .backdrop,.loaded .image{opacity:1}
     .loaded .image{transform:scale(1)}
     .scene:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 140px 22px rgba(0,0,0,.28)}
+    .error{position:fixed;left:16px;bottom:16px;padding:8px 10px;background:#220b13;color:#ffb7cc;font:12px/1.4 system-ui;border:1px solid #71304a;border-radius:8px}
     @media(prefers-reduced-motion:reduce){.backdrop,.image{transition:none}}
   </style>
 </head>
@@ -27,22 +28,27 @@
     <img class="image" id="image" alt="A solitary white-haired figure standing on a reflective cosmic landscape beneath a vast dark vortex.">
   </main>
   <script>
-    fetch('./assets/scene.webp')
-      .then(response => {
-        if (!response.ok) throw new Error('Scene asset could not be loaded');
-        return response.text();
-      })
-      .then(base64 => {
-        const source = 'data:image/webp;base64,' + base64.trim();
+    const chunks = [0,1,2].map(i => `./assets/scene-chunks/${i}.txt?v=2`);
+    Promise.all(chunks.map(url => fetch(url, {cache:'no-store'}).then(r => {
+      if (!r.ok) throw new Error(`${url}: ${r.status}`);
+      return r.text();
+    })))
+      .then(parts => {
+        const source = 'data:image/webp;base64,' + parts.join('').replace(/\s+/g, '');
+        const scene = document.getElementById('scene');
         const backdrop = document.getElementById('backdrop');
         const image = document.getElementById('image');
+        image.onload = () => scene.classList.add('loaded');
+        image.onerror = () => { throw new Error('Decoded scene image is invalid'); };
         backdrop.src = source;
-        image.onload = () => document.getElementById('scene').classList.add('loaded');
         image.src = source;
       })
       .catch(error => {
         console.error(error);
-        document.body.style.background = '#02040b';
+        const badge = document.createElement('div');
+        badge.className = 'error';
+        badge.textContent = 'Scene failed to load: ' + error.message;
+        document.body.appendChild(badge);
       });
   </script>
 </body>
