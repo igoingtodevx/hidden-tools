@@ -1,206 +1,34 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#050611" />
-  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
-  <meta name="description" content="A private constellation of useful tools for friends and family." />
-  <title>Nexus — Private Tools</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#02040b">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+  <title>Hidden Labs</title>
+  <style>
+    :root{color-scheme:dark}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#02040b}body{min-height:100dvh}.scene{position:fixed;inset:0;overflow:hidden;isolation:isolate;background:#02040b}.scene img{position:absolute;inset:0;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none}.backdrop{object-fit:cover;filter:blur(34px) saturate(1.08) brightness(.42);transform:scale(1.08);opacity:0;transition:opacity .7s ease;z-index:-1}.image{object-fit:cover;object-position:50% 50%;opacity:0;transform:scale(1.012);transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1.1s cubic-bezier(.2,.8,.2,1)}.loaded .backdrop,.loaded .image{opacity:1}.loaded .image{transform:scale(1)}.scene:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 140px 22px rgba(0,0,0,.28)}@media(max-aspect-ratio:3/4){.image{object-position:50% 50%}}@media(prefers-reduced-motion:reduce){.backdrop,.image{transition:none}}
+  </style>
 </head>
 <body>
-  <div class="space" aria-hidden="true">
-    <div class="space__image"></div>
-    <div class="space__veil"></div>
-    <div class="stars stars--one"></div>
-    <div class="stars stars--two"></div>
-    <div class="scanline"></div>
-  </div>
-
-  <header class="topbar">
-    <a class="brand" href="#top" aria-label="Nexus home">
-      <span class="brand__mark"><i></i><i></i></span>
-      <span>NEXUS</span>
-      <small>PRIVATE</small>
-    </a>
-    <nav class="nav" aria-label="Primary">
-      <a class="active" href="#tools">Tools</a>
-      <a href="#rooms">AI rooms</a>
-      <a href="#about">About</a>
-    </nav>
-    <button class="command-button" id="commandButton" type="button">
-      <span>Quick launch</span><kbd>/</kbd>
-    </button>
-  </header>
-
-  <main id="top">
-    <section class="hero">
-      <div class="hero__copy reveal">
-        <p class="eyebrow"><span></span> Friends & family network</p>
-        <h1>Your private<br><em>corner of the web.</em></h1>
-        <p class="lede">One beautifully strange place for the little tools, AI helpers and digital shortcuts we actually use.</p>
-        <div class="hero__actions">
-          <a class="primary-button" href="#tools">Open the vault <span>↗</span></a>
-          <button class="ghost-button" id="surpriseButton" type="button">Surprise me</button>
-        </div>
-        <div class="status-row">
-          <span><i class="status-dot"></i> Private beta</span>
-          <span>10 tools online</span>
-          <span>No tracking</span>
-        </div>
-      </div>
-
-      <div class="portal reveal" aria-hidden="true">
-        <div class="portal__ring portal__ring--outer"></div>
-        <div class="portal__ring portal__ring--middle"></div>
-        <div class="portal__ring portal__ring--inner"></div>
-        <div class="portal__glow"></div>
-        <div class="guardian guardian--css"><i class="guardian__head"></i><i class="guardian__body"></i><i class="guardian__coat"></i></div>
-        <div class="portal__label portal__label--left"><span>NODE</span> 07.24</div>
-        <div class="portal__label portal__label--right"><span>ACCESS</span> FRIENDS</div>
-      </div>
-
-      <aside class="signal-card reveal">
-        <span class="signal-card__index">01 / LIVE</span>
-        <h2>The useful stuff,<br>without the noise.</h2>
-        <p>Fast tools. Small rituals. Zero algorithmic sludge.</p>
-        <div class="signal-card__meter"><i></i></div>
-      </aside>
-    </section>
-
-    <section class="tools-section" id="tools">
-      <div class="section-heading reveal">
-        <div>
-          <p class="eyebrow"><span></span> Tool constellation</p>
-          <h2>Choose your portal.</h2>
-        </div>
-        <p>Everything opens instantly. The first tools run fully in your browser; API-backed tools are wired as upgrade slots.</p>
-      </div>
-
-      <div class="filterbar reveal">
-        <button class="filter active" data-filter="all">All tools</button>
-        <button class="filter" data-filter="ai">AI</button>
-        <button class="filter" data-filter="media">Media</button>
-        <button class="filter" data-filter="utility">Utility</button>
-        <label class="search"><span>⌕</span><input id="toolSearch" type="search" placeholder="Search the vault" autocomplete="off"></label>
-      </div>
-
-      <div class="tool-grid" id="toolGrid">
-        <article class="tool-card tool-card--featured reveal" data-category="ai" data-tool="ai-room" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">✦</span><span class="availability">API SLOT</span></div>
-          <div class="tool-card__visual visual-orb"><i></i><i></i><i></i></div>
-          <div class="tool-card__body"><p>AI / PRIVATE</p><h3>Ask the Oracle</h3><span>A private custom chat room with selectable personalities and shared family context.</span></div>
-          <button class="tool-card__launch" aria-label="Open Ask the Oracle">↗</button>
-        </article>
-
-        <article class="tool-card reveal" data-category="media" data-tool="media-desk" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">◉</span><span class="availability live">READY</span></div>
-          <div class="tool-card__body"><p>MEDIA / DESK</p><h3>Media command</h3><span>Create a clean yt-dlp command for content you own or are allowed to download.</span></div>
-          <div class="mini-wave"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <button class="tool-card__launch" aria-label="Open Media command">↗</button>
-        </article>
-
-        <article class="tool-card reveal" data-category="media utility" data-tool="image-lab" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">◇</span><span class="availability live">LOCAL</span></div>
-          <div class="tool-card__body"><p>IMAGE / LAB</p><h3>Image Alchemy</h3><span>Compress images locally. Nothing leaves the device.</span></div>
-          <div class="pixel-field"></div>
-          <button class="tool-card__launch" aria-label="Open Image Alchemy">↗</button>
-        </article>
-
-        <article class="tool-card reveal" data-category="utility" data-tool="json-doctor" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">{ }</span><span class="availability live">LOCAL</span></div>
-          <div class="tool-card__body"><p>DEV / CLEAN</p><h3>JSON Doctor</h3><span>Format, validate or minify chaotic JSON in one click.</span></div>
-          <div class="code-lines"><i></i><i></i><i></i><i></i></div>
-          <button class="tool-card__launch" aria-label="Open JSON Doctor">↗</button>
-        </article>
-
-        <article class="tool-card reveal" data-category="utility" data-tool="password-forge" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">⌁</span><span class="availability live">LOCAL</span></div>
-          <div class="tool-card__body"><p>SECURE / KEY</p><h3>Password Forge</h3><span>Generate strong passwords without sending anything anywhere.</span></div>
-          <div class="key-visual">• • • • • •</div>
-          <button class="tool-card__launch" aria-label="Open Password Forge">↗</button>
-        </article>
-
-        <article class="tool-card reveal" data-category="utility" data-tool="link-vault" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">∞</span><span class="availability live">LOCAL</span></div>
-          <div class="tool-card__body"><p>LINKS / MEMORY</p><h3>Link Vault</h3><span>Save useful links locally and stop losing them in group chats.</span></div>
-          <div class="orbit-dots"><i></i><i></i><i></i></div>
-          <button class="tool-card__launch" aria-label="Open Link Vault">↗</button>
-        </article>
-
-        <article class="tool-card reveal" data-category="utility" data-tool="time-warp" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">◷</span><span class="availability live">LOCAL</span></div>
-          <div class="tool-card__body"><p>TIME / SHIFT</p><h3>Time Warp</h3><span>Convert Unix timestamps and date formats instantly.</span></div>
-          <div class="time-visual" id="liveClock">00:00:00</div>
-          <button class="tool-card__launch" aria-label="Open Time Warp">↗</button>
-        </article>
-
-        <article class="tool-card reveal" data-category="utility" data-tool="file-fingerprint" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">⌾</span><span class="availability live">LOCAL</span></div>
-          <div class="tool-card__body"><p>FILE / VERIFY</p><h3>File Fingerprint</h3><span>Create a SHA-256 checksum locally to verify that a file has not changed.</span></div>
-          <div class="fingerprint-visual"><i></i><i></i><i></i></div>
-          <button class="tool-card__launch" aria-label="Open File Fingerprint">↗</button>
-        </article>
-
-        <article class="tool-card reveal" data-category="utility" data-tool="text-reactor" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">Aa</span><span class="availability live">LOCAL</span></div>
-          <div class="tool-card__body"><p>TEXT / SHAPE</p><h3>Text Reactor</h3><span>Clean, transform and count text without uploading it anywhere.</span></div>
-          <div class="text-visual"><i></i><i></i><i></i><i></i></div>
-          <button class="tool-card__launch" aria-label="Open Text Reactor">↗</button>
-        </article>
-
-        <article class="tool-card tool-card--locked reveal" data-category="ai" data-tool="family-brain" tabindex="0">
-          <div class="tool-card__top"><span class="tool-icon">◌</span><span class="availability">COMING</span></div>
-          <div class="tool-card__body"><p>AI / MEMORY</p><h3>Family Brain</h3><span>Shared answers, recipes, plans and knowledge — with permissions.</span></div>
-          <div class="lock-visual"><i></i></div>
-          <button class="tool-card__launch" aria-label="Open Family Brain">↗</button>
-        </article>
-      </div>
-    </section>
-
-    <section class="rooms-section" id="rooms">
-      <div class="rooms-shell reveal">
-        <div class="rooms-copy">
-          <p class="eyebrow"><span></span> Custom AI rooms</p>
-          <h2>Different minds<br>for different moments.</h2>
-          <p>One assistant for travel planning. One for tech support. One that explains things to the family without jargon. Each room gets its own rules, model and context.</p>
-          <button class="primary-button" data-open-tool="ai-room">Preview a room <span>↗</span></button>
-        </div>
-        <div class="room-stack">
-          <div class="room-card"><span>01</span><div><small>CALM / CLEAR</small><strong>Explain it simply</strong></div><i>↗</i></div>
-          <div class="room-card"><span>02</span><div><small>TRAVEL / LIVE</small><strong>Trip architect</strong></div><i>↗</i></div>
-          <div class="room-card"><span>03</span><div><small>TECH / FIX</small><strong>Family support desk</strong></div><i>↗</i></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="about-section" id="about">
-      <p>NEXUS is a private prototype built for people we know.</p>
-      <span>Designed in the dark · 2026</span>
-    </section>
+  <main class="scene" id="scene" aria-label="Cosmic infinity scene">
+    <img class="backdrop" id="backdrop" alt="" aria-hidden="true">
+    <img class="image" id="image" alt="A solitary white-haired figure standing on a reflective cosmic landscape beneath a vast dark vortex.">
   </main>
-
-  <div class="modal" id="toolModal" aria-hidden="true">
-    <button class="modal__backdrop" data-close-modal aria-label="Close"></button>
-    <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <header class="modal__header">
-        <div><p id="modalKicker">UTILITY / LOCAL</p><h2 id="modalTitle">Tool</h2></div>
-        <button class="modal__close" data-close-modal aria-label="Close">×</button>
-      </header>
-      <div class="modal__content" id="modalContent"></div>
-    </section>
-  </div>
-
-  <div class="command" id="commandPalette" aria-hidden="true">
-    <button class="command__backdrop" data-close-command aria-label="Close"></button>
-    <div class="command__panel">
-      <div class="command__input"><span>⌕</span><input id="commandInput" placeholder="Launch a tool…" autocomplete="off"><kbd>ESC</kbd></div>
-      <div class="command__results" id="commandResults"></div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast" role="status"></div>
-  <script src="./app.js"></script>
+  <script>
+    fetch('./assets/infinity.b64')
+      .then(response => {
+        if (!response.ok) throw new Error('Scene asset could not be loaded');
+        return response.text();
+      })
+      .then(base64 => {
+        const source = 'data:image/webp;base64,' + base64.trim();
+        document.getElementById('backdrop').src = source;
+        const image = document.getElementById('image');
+        image.onload = () => document.getElementById('scene').classList.add('loaded');
+        image.src = source;
+      })
+      .catch(() => document.body.style.background = '#02040b');
+  </script>
 </body>
 </html>
