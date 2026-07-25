@@ -1,0 +1,1 @@
+12ui scene assets are deployed as normal binary files in the final atomic commit.
