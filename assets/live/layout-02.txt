@@ -1,0 +1,39 @@
+]=await Promise.all([
+      fetchParts('./assets/live/bg-',9),
+      fetchParts('./assets/live/fig-',1)
+    ]);
+    const bgUrl=toUrl(bg,'image/avif');
+    const figureUrl=toUrl(figure,'image/avif');
+    document.documentElement.style.setProperty('--layerdoc-raster-0',`url("${bgUrl}")`);
+    const img=document.querySelector('img[data-x="1"]');
+    await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(new Error('figure decode failed'));img.src=figureUrl});
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    document.documentElement.dataset.layerdocAssets='ready';
+    document.documentElement.dispatchEvent(new Event('layerdoc:assets-ready'));
+  }catch(error){
+    document.documentElement.dataset.layerdocAssets='failed';
+    console.error(error);
+    const d=document.createElement('pre');
+    d.textContent='ASSET LOAD FAILED: '+error.message;
+    Object.assign(d.style,{position:'fixed',left:'8px',bottom:'8px',zIndex:9999,color:'#fff',background:'#900',padding:'8px',font:'12px monospace'});
+    document.body.append(d);
+  }
+})();
+</script>
+<script>(function(){for(const n of document.querySelectorAll('[data-responsive-menu]')){const i=n.querySelector(':scope>.mnu-t');const l=n.querySelector(':scope>.mnu-l');const p=n.querySelector(':scope>.mnu-p');if(!i||!l||!p)continue;const s=()=>l.setAttribute('aria-expanded',String(i.checked));const m=()=>{const e=getComputedStyle(n).getPropertyValue('--responsive-menu-enabled').trim()==='1';if(!e&&i.checked){i.checked=false;s();}if(!n.hasAttribute('data-responsive-menu-injected'))return;if(e&&p.childNodes.length===0){for(const c of [...n.childNodes])if(c!==i&&c!==l&&c!==p)p.append(c);}else if(!e&&p.childNodes.length>0){while(p.firstChild)n.insertBefore(p.firstChild,p);}};s();m();i.addEventListener('change',s);addEventListener('resize',m);n.addEventListener('keydown',e=>{if(e.key==='Escape'&&i.checked){i.checked=false;s();i.focus();}else if(e.key==='Enter'&&e.target===i){e.preventDefault();i.checked=!i.checked;s();}});}})();</script>
+<script>(function(){
+const F='--responsive-text-fitted-font',L='--responsive-text-fitted-line-height',Q='.generated-screen .ly-anchor-canvas [data-x]',T=2;
+let frame=0;
+const clear=e=>{e.style.removeProperty(F);e.style.removeProperty(L);delete e.dataset.responsiveTextFit};
+const apply=(entry,size)=>{entry.element.style.setProperty(F,size+'px');entry.element.style.setProperty(L,size*entry.lineRatio+'px')};
+const inkRect=e=>{const range=document.createRange();range.selectNodeContents(e);const rect=range.getBoundingClientRect();range.detach();return rect};
+const clipRect=e=>{let left=-Infinity,top=-Infinity,right=Infinity,bottom=Infinity;for(let parent=e.parentElement;parent;parent=parent.parentElement){const style=getComputedStyle(parent),rect=parent.getBoundingClientRect();if(style.overflowX==='hidden'||style.overflowX==='clip'){left=Math.max(left,rect.left);right=Math.min(right,rect.right)}if(style.overflowY==='hidden'||style.overflowY==='clip'){top=Math.max(top,rect.top);bottom=Math.min(bottom,rect.bottom)}}return{left,top,right,bottom}};
+const measure=entry=>{const element=entry.element,box=element.getBoundingClientRect(),ink=inkRect(element),clip=clipRect(element);const own=ink.width===0||ink.width<=box.width+T&&ink.height<=box.height+T;const visible=ink.width===0||ink.left>=clip.left-T&&ink.right<=clip.right+T&&ink.top>=clip.top-T&&ink.bottom<=clip.bottom+T;return{fits:own&&visible,needs:!visible||ink.width>box.width*1.1||ink.height>box.height*1.1}};
+const pending=()=>{document.documentElement.dataset.responsiveTextFit='pending'};
+const finish=unresolved=>{const state=unresolved?'unresolved':'ready';document.documentElement.dataset.responsiveTextFit=state;dispatchEvent(new CustomEvent('responsive-text-fit-complete',{detail:{state}}))};
+const fit=()=>{frame=0;if(document.fonts&&document.fonts.status==='loading'){pending();return}const elements=[...document.querySelectorAll(Q)];for(const element of elements)clear(element);const entries=[];for(const element of elements){const style=getComputedStyle(element);if(style.getPropertyValue('--responsive-text-fit').trim()!=='1'||style.display==='none'||style.visibility==='hidden'||element.clientWidth<=0||element.clientHeight<=0)continue;const requested=parseFloat(style.fontSize),lineHeight=parseFloat(style.lineHeight),minimumScale=parseFloat(style.getPropertyValue('--responsive-text-min-scale'));if(!Number.isFinite(requested)||requested<=0||!Number.isFinite(lineHeight)||lineHeight<=0||!Number.isFinite(minimumScale)||minimumScale<=0)continue;const boundedMinimum=requested*Math.min(minimumScale,1),entry={element,requested,minimum:boundedMinimum,lineRatio:lineHeight/requested,low:boundedMinimum,high:requested};if(measure(entry).needs)entries.push(entry)}if(entries.length===0){finish(false);return}for(const entry of entries)apply(entry,entry.minimum);const active=[],unresolved=[];for(const entry of entries){if(measure(entry).fits){entry.low=entry.minimum;active.push(entry)}else{entry.element.dataset.responsiveTextFit='unresolved';unresolved.push(entry)}}for(let iteration=0;iteration<14&&active.length>0;iteration++){for(const entry of active)apply(entry,(entry.low+entry.high)/2);const results=active.map(entry=>measure(entry).fits);for(let index=0;index<active.length;index++){const entry=active[index],candidate=(entry.low+entry.high)/2;if(results[index])entry.low=candidate;else entry.high=candidate}}for(const entry of active){apply(entry,Math.floor(entry.low*100)/100);entry.element.dataset.responsiveTextFit='fitted'}finish(unresolved.length>0)};
+const schedule=()=>{pending();if(document.fonts&&document.fonts.status==='loading')return;if(frame===0)frame=requestAnimationFrame(fit)};
+pending();schedule();addEventListener('resize',schedule);if(document.fonts){document.fonts.ready.then(schedule);document.fonts.addEventListener('loading',pending);document.fonts.addEventListener('loadingdone',schedule);document.fonts.addEventListener('loadingerror',schedule)}if(typeof ResizeObserver!=='undefined'){const root=document.querySelector('.generated-screen .ly-anchor-canvas');if(root)new ResizeObserver(schedule).observe(root)}
+})();</script>
+</body>
+</html>
